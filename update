@@ -35,6 +35,8 @@ Status=$(cat skip)
 if [ "$Status" = "Skip" ]; then
     echo "  SKIP $Name"
     exit 0
+else
+    rm skip
 fi
 
 trap fail EXIT
