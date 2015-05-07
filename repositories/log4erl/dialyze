@@ -1,0 +1,6 @@
+#!/bin/bash
+
+Make="true"
+Target="-r code"
+
+. ../../dialyze_common
