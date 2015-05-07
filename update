@@ -31,9 +31,9 @@ Name=$(basename $Repository)
 cd $Repository
 
 touch skip
-Status=$(cat skip)
-if [ "$Status" = "Skip" ]; then
-    echo "  SKIP $Name"
+Skip=$(cat skip)
+if [ -n "$Skip" ]; then
+    echo "  SKIP $Name ($Skip)"
     exit 0
 else
     rm skip

@@ -35,7 +35,7 @@ while read -u 10 Repository; do
                     echo
                     if [[ ! $REPLY =~ ^[Yy]$ ]]
                     then
-                        echo Skip > skip
+                        echo "Not initialized" > skip
                     else
                         ln -s ../../dialyze_basic dialyze
                     fi
