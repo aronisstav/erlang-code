@@ -40,5 +40,6 @@ while read Repository; do
         fi
     else
         echo "    OK $Name"
+        cd ../..
     fi
 done

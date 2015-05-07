@@ -35,6 +35,7 @@ if [ "$Status" != "Ready" -a  -n "$Make" ]; then
     fi
 fi
 
+status "Dialyzing..."
 dialyzer $PLT $Target > $Output 2>&1
 
 if grep -q "Analysis failed" $Output; then

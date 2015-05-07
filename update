@@ -31,9 +31,16 @@ trap fail EXIT
 
 # Update code (clone it if it doesn't exist)
 if [ -d code ]; then
-    status "Pulling..."
     cd code
-    log git pull || (cd ..; status "Pull failed"; exit 1)
+
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse @{u})
+    BASE=$(git merge-base @ @{u})
+
+    if [ $LOCAL != $REMOTE ]; then
+        status "Pulling..."
+        log git pull || (cd ..; status "Pull failed"; exit 1)
+    fi
     cd ..
 else
     status "Cloning..."
@@ -61,5 +68,6 @@ fi
 git diff-index --quiet HEAD || (status "Uncommited changes"; exit 1)
 
 trap - EXIT
+status "Ready"
 echo "    OK $(basename $Repository)"
 exit 0
