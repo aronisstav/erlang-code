@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd code
+sed -i 's,_lib("piqi/include/piqi_piqi.hrl"),("piqi_piqi.hrl"),' src/*.*rl
+sed -i 's,_lib("piqi/include/piqirun.hrl"),("piqirun.hrl"),' src/*.*rl
+make
