@@ -29,6 +29,9 @@ while read Repository; do
 
             # Update the repository
             echo $Repository > url
+            if [ ! -f dialyze ]; then
+                ln -s ../../dialyze_basic dialyze
+            fi
             cd ../..
             ./update repositories/$Name
 
