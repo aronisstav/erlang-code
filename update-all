@@ -4,4 +4,4 @@
 # Update all repositories.
 # ==============================================================================
 
-ls -d repositories/*/ | xargs ./update
+ls -d repositories/* | xargs -n 1 -P 8 ./update
