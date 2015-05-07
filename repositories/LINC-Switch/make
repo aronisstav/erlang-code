@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd code
+rebar get-deps
+cd deps/lager
+rebar get-deps
+rebar compile
+cd ../..
+rebar compile skip_deps=true
