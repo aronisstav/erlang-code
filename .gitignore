@@ -1,3 +1,4 @@
 repositories/*/*
 !repositories/*/make
 !repositories/*/dialyze
+!repositories/*/url

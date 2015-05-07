@@ -65,7 +65,7 @@ else
 fi
 
 # Check if there are uncommitted files
-git diff-index --quiet HEAD || (status "Uncommited changes"; exit 1)
+[ -z "$(git status --porcelain)" ] || (status "Uncommited changes"; exit 1)
 
 trap - EXIT
 status "Ready"

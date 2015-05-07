@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd code
+rebar get-deps
+rebar compile skip_deps=true
