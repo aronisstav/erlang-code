@@ -9,7 +9,7 @@ set -o errexit
 
 # Using a list of repositories (e.g. github's)
 
-while read Repository; do
+while read -u 10 Repository; do
 
     # Check if a directory for it exists
     cd repositories
@@ -30,8 +30,18 @@ while read Repository; do
             # Update the repository
             echo $Repository > url
             if [ ! -f dialyze ]; then
-                ln -s ../../dialyze_basic dialyze
+                if [ ! -e skip ]; then
+                    read -p "Process $Name? " -n 1 -r
+                    echo
+                    if [[ ! $REPLY =~ ^[Yy]$ ]]
+                    then
+                        echo Skip > skip
+                    else
+                        ln -s ../../dialyze_basic dialyze
+                    fi
+                fi
             fi
+
             cd ../..
             ./update repositories/$Name
 
@@ -45,4 +55,4 @@ while read Repository; do
         echo "    OK $Name"
         cd ../..
     fi
-done
+done 10<$1

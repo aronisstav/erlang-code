@@ -1,4 +1,5 @@
 repositories/*/*
-!repositories/*/make
 !repositories/*/dialyze
+!repositories/*/make
+!repositories/*/skip
 !repositories/*/url

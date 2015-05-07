@@ -8,7 +8,7 @@ set -o errexit
 
 function fail {
     Reason=$(cat status)
-    echo "FAILED $(basename $Repository) ($Reason)"
+    echo "FAILED $Name ($Reason)"
     exit 1
 }
 
@@ -26,7 +26,17 @@ fi
 
 Repository=$1
 
+Name=$(basename $Repository)
+
 cd $Repository
+
+touch skip
+Status=$(cat skip)
+if [ "$Status" = "Skip" ]; then
+    echo "  SKIP $Name"
+    exit 0
+fi
+
 trap fail EXIT
 
 # Update code (clone it if it doesn't exist)
@@ -69,5 +79,5 @@ fi
 
 trap - EXIT
 status "Ready"
-echo "    OK $(basename $Repository)"
+echo "    OK $Name"
 exit 0
