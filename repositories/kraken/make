@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. ../../make_common
+
+#ERL_LIBS=$(pwd):$ERL_LIBS
+cd code
+sed -i 's,_lib("kraken_test.hrl,("kraken_test.hrl,' src/*.erl
+basic_rebar
+sed -i 's,("kraken_test.hrl,_lib("kraken_test.hrl,' src/*.erl
