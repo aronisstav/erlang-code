@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# ==============================================================================
+# Update a single repository.
+# ==============================================================================
+
+set -o errexit
+
+function fail {
+    Reason=$(cat status)
+    echo "FAILED $(basename $Repository) ($Reason)"
+    exit 1
+}
+
+function log {
+    $@ > log 2>&1
+}
+
+function status {
+    echo $1 > status
+}
+
+if [ -z "$1" ]; then
+    ./update_all
+fi
+
+Repository=$1
+
+cd $Repository
+trap fail EXIT
+
+# Update code (clone it if it doesn't exist)
+if [ -d code ]; then
+    status "Pulling..."
+    cd code
+    log git pull || (cd ..; status "Pull failed"; exit 1)
+    cd ..
+else
+    status "Cloning..."
+    touch url
+    URL=$(cat url)
+    if [ -z "$URL" ]; then
+        status "Missing URL"
+        exit 1
+    else
+        log git clone $URL code || (status "Clone failed"; exit 1)
+    fi
+fi
+status "Updated"
+
+# Check for existence and status of dialyzing instructions
+if [ -f dialyze ]; then
+    status "Dialyzing..."
+    log ./dialyze
+else
+    status "./dialyze missing"
+    exit 1
+fi
+
+# Check if there are uncommitted files
+git diff-index --quiet HEAD || (status "Uncommited changes"; exit 1)
+
+trap - EXIT
+echo "    OK $(basename $Repository)"
+exit 0

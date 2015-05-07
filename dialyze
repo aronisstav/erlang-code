@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# ==============================================================================
+# Initiates a Dialyzer run on every availale repository
+# ==============================================================================
+
+Dialyzing=true
+
+# Copy existing plt
+
+# Update it with any missing OTP applications
+
+# Create dialyzer run directory
+
+# For each ready repository, run dialyzer and store results in relevant file
+
+# Send e-mail when done

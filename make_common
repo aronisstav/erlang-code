@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# ==============================================================================
+# Common functions to be used in ./make scripts.
+# ==============================================================================
+
+function basic_rebar() {
+  mv rebar.config rebar.config.bak
+  rebar co
+  Ret=$?
+  mv rebar.config.bak rebar.config
+  return $Ret
+}

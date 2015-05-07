@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# ==============================================================================
+# Shared functionality of ./dialyze scripts goes here
+# ==============================================================================
+
+if [ -n "$PLT" ]; then
+    PLT="--plt $PLT"
+fi
+: ${Output:="dialyzer_output"}
+: ${Target:="--src -r code"}
+
+function status {
+    echo $1 > status
+}
+
+function log {
+    $@ > log 2>&1
+}
+
+touch status
+Status=$(cat status)
+if [ "$Status" != "Ready" -a  -n "$Make" ]; then
+    if [ -z "$Dialyzing" ]; then
+        if [ -f make ]; then
+            status "Making..."
+            log ./make || (status "Make failed"; exit 1)
+        else
+            status "./make missing"
+            exit 1
+        fi
+    else
+        status "Not ready"
+        exit 1
+    fi
+fi
+
+dialyzer $PLT $Target > $Output 2>&1
+
+if grep -q "Analysis failed" $Output; then
+    status "Dialyzer failed"
+    exit 1
+fi

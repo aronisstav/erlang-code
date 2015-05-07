@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# ==============================================================================
+# When fed with a list of git repositories, initialize them.
+# ==============================================================================
+
+set -o nounset
+set -o errexit
+
+# Using a list of repositories (e.g. github's)
+
+while read Repository; do
+
+    # Check if a directory for it exists
+    cd repositories
+    Name=$(basename $Repository .git)
+    mkdir -p $Name
+    cd $Name
+
+    # If it is not initialized
+    touch status
+    Status=$(cat status)
+    if [ "$Status" != "Ready" ]; then
+
+        # If no identical repository exists
+        touch url
+        URL=$(cat url)
+        if [ -z "$URL" -o "$URL" == "$Repository" ]; then
+
+            # Update the repository
+            echo $Repository > url
+            cd ../..
+            ./update repositories/$Name
+
+        else
+
+            echo "FAILED $Name (Name exists)"
+            exit 1
+
+        fi
+    else
+        echo "    OK $Name"
+    fi
+done
